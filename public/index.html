@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AIDJ</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <!--&#91;if lt IE 9&#93;>
+    <script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!&#91;endif&#93;-->
+    <link rel="shortcut icon" href="">
+</head>
+<body>
+<!-- Place your content here -->
+  <div>
+    <input id="url" placeholder="URL" />
+    <button id="send">リクエスト</button>
+  </div>
+  <ul id="songs">
+  </ul>
+<!-- SCRIPTS -->
+<!-- Example: <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<script src="get-youtube-info.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+<script src="config.js"></script>
+<script>
+    // データベースの参照を準備
+    var songsRef = firebase.database().ref('songs')
+
+    // 既存メッセージを表示
+    songsRef.orderByKey().on('child_added', function(snapshot) {
+      var msg = snapshot.val();
+      $('<li>').text(msg.name).appendTo('#songs');
+    });
+    firebase.database().ref('playing').on('value', function(snapshot) {
+      var index = snapshot.val().index;
+      console.log('index: ' + index);
+
+    });
+
+    $('#send').click(function() {
+      // 新規メッセージを投稿
+      getYoutubeInfo($('#url').val(), addNewSong);
+    });
+
+    function addNewSong(id, url, title) {
+      songsRef.push({
+        name: title,
+        id: id,
+        url: url,
+        timestamp: new Date().getTime()
+      });
+    }
+
+    function getYoutubeInfo(video_url, callback) {
+      var yt_video_id = getYoutubeIdByUrl( video_url );
+      if( yt_video_id ){
+        var key =
+       $.getJSON(
+         'https://www.googleapis.com/youtube/v3/videos?id='+ yt_video_id
+          +'&part=snippet,contentDetails&key=' + yt_key
+          + '&fields=items(id,snippet(title,thumbnails),contentDetails(duration))'
+       ).done(function(data, status, xhr) {
+         console.log(data);
+         var yt_response = data.items[0], // If you need more video informations, take a look on this response: data.data
+             yt_title = yt_response.snippet.title,
+             yt_duration = formatSecondsAsTime( yt_response.contentDetails.duration ),
+             yt_url = 'https://www.youtube.com/watch?v=' + yt_video_id;
+        //  console.log('youtube title: ' + yt_title);
+        //  console.log('youtube duration: ' + yt_duration);
+        //  console.log('youtube url: ' + yt_url);
+         callback(yt_video_id, yt_url, yt_title);
+       });
+      }
+    }
+
+    function setIndex(index) {
+      firebase.database().ref('playing').set({
+          index: index
+      });
+    }
+</script>
+</html>
