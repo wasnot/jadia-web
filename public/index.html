@@ -26,22 +26,23 @@
 <!-- Example: <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-<script src="get-youtube-info.js"></script>
+<script src="lib/get-youtube-info.js"></script>
+<script src="lib/querystring.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
 <script src="config.js"></script>
 <script>
+    var room_id = QueryString.parse().room_id || dj_room_id
     // データベースの参照を準備
-    var songsRef = firebase.database().ref('songs')
+    var songsRef = firebase.database().ref('songs/' + room_id)
 
     // 既存メッセージを表示
     songsRef.orderByKey().on('child_added', function(snapshot) {
       var msg = snapshot.val();
       $('<li>').text(msg.name).appendTo('#songs');
     });
-    firebase.database().ref('playing').on('value', function(snapshot) {
-      var index = snapshot.val().index;
-      console.log('index: ' + index);
-
+    firebase.database().ref('rooms/' + room_id).on('value', function(snapshot) {
+      var playing = snapshot.val().playing;
+      console.log('playing index: ' + playing);
     });
 
     $('#send').click(function() {
@@ -81,8 +82,8 @@
     }
 
     function setIndex(index) {
-      firebase.database().ref('playing').set({
-          index: index
+      firebase.database().ref('rooms/' + room_id).set({
+          playing: index
       });
     }
 </script>
