@@ -93,5 +93,4 @@ Temporary Items
 
 # firebase
 .firebaserc
-public/config.js
-
+*config.js

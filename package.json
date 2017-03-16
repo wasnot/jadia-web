@@ -7,5 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-preset-es2015-riot": "^1.1.0",
+    "riot": "^3.3.2",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "firebase": "^3.7.2",
+    "jquery": "^3.1.1"
+  }
 }

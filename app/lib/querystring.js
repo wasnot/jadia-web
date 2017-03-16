@@ -19,3 +19,4 @@ var QueryString = {
     }).join(sep);
   },
 };
+module.exports = QueryString
