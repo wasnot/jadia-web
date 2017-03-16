@@ -23,4 +23,4 @@ var config = {
   yt_key: 'your youtube api key',
   dj_room_id: 'default room id',
 }
-module.exports = config
+export default config
