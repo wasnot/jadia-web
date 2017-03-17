@@ -7,8 +7,8 @@ import config from './config.js';
 import QueryString from './lib/querystring.js';
 import YoutubeInfo from './lib/get-youtube-info.js';
 
-// import count from './tag/count.tag';
-// riot.mount('count')
+import app from './tag/app.tag';
+riot.mount('*')
 
 // Initialize Firebase
 firebase.initializeApp(config.fb_config);
@@ -38,7 +38,7 @@ function addNewSong(id, url, title) {
 function getYoutubeInfo(video_url, callback) {
     var yt_video_id = YoutubeInfo.getYoutubeIdByUrl(video_url);
     if (yt_video_id) {
-        var key = $.getJSON('https://www.googleapis.com/youtube/v3/videos?id=' + yt_video_id + '&part=snippet,contentDetails&key=' + yt_key + '&fields=items(id,snippet(title,thumbnails),contentDetails(duration))').done(function(data, status, xhr) {
+        var key = $.getJSON('https://www.googleapis.com/youtube/v3/videos?id=' + yt_video_id + '&part=snippet,contentDetails&key=' + config.yt_key + '&fields=items(id,snippet(title,thumbnails),contentDetails(duration))').done(function(data, status, xhr) {
             console.log(data);
             var yt_response = data.items[0], // If you need more video informations, take a look on this response: data.data
                 yt_title = yt_response.snippet.title,

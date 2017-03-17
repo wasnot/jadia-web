@@ -1,14 +1,27 @@
+import app_menu from './app-menu.tag';
+import app_hero from './app-hero.tag';
+import app_links from './app-links.tag';
+import app_footer from './app-footer.tag';
+
 <app>
-   <h2>{ opts.title }</h2>
-   <button onclick="{ show_count }">click</button>
+    <h2>test</h2>
+    <app-menu items={ urls }/>
+    <app-hero title="Hello world!"/>
+    <app-links items={ urls }/>
+    <app-footer message="Made in OpenSource Cafe"/>
 
-   <script>
-      self = this
-      let count = 0
-
-      show_count() {
-         count += 1
-         alert(`count: ${count}`)
-      }
-   </script>
+    <script>
+        this.urls = [
+            {
+                title: 'GitHub',
+                url: 'https://github.com/osscafe'
+            }, {
+                title: 'Twitter',
+                url: 'https://twitter.com/osscafe'
+            }, {
+                title: 'Facebook',
+                url: 'https://www.facebook.com/shimokitazawa.osscafe'
+            }
+        ]
+    </script>
 </app>
