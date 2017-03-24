@@ -7,8 +7,8 @@ import config from './config.js';
 import QueryString from './lib/querystring.js';
 import YoutubeInfo from './lib/get-youtube-info.js';
 
-import app from './tag/app.tag';
-riot.mount('*')
+// import app from './tag/app.tag';
+// riot.mount('*')
 
 // Initialize Firebase
 firebase.initializeApp(config.fb_config);
@@ -19,11 +19,19 @@ var songsRef = firebase.database().ref('songs/' + room_id)
 // 既存メッセージを表示
 songsRef.orderByKey().on('child_added', function(snapshot) {
     var msg = snapshot.val();
-    $('<li>').text(msg.name).appendTo('#songs');
+    $('<li class="list-group-item">').text(msg.name).appendTo('#songs');
 });
 firebase.database().ref('rooms/' + room_id).on('value', function(snapshot) {
     var playing = snapshot.val().playing;
     console.log('playing index: ' + playing);
+
+    $('li').each(function(index) {
+        if (index == playing) {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+    });
 });
 
 $('#send').click(function() {
