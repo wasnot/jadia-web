@@ -19,7 +19,11 @@ var songsRef = firebase.database().ref('songs/' + room_id)
 // 既存メッセージを表示
 songsRef.orderByKey().on('child_added', function(snapshot) {
     var msg = snapshot.val();
-    $('<li class="list-group-item">').text(msg.name).appendTo('#songs');
+    $('<li class="list-group-item"">')
+      .text(msg.name)
+      .append($(`<a href="${msg.url}" target="_blank" class="pull-right">`)
+        .append($('<i class="fa fa-external-link">')))
+      .appendTo('#songs');
 });
 firebase.database().ref('rooms/' + room_id).on('value', function(snapshot) {
     var playing = snapshot.val().playing;
