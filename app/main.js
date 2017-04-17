@@ -36,6 +36,10 @@ firebase.database().ref('rooms/' + room_id).on('value', function(snapshot) {
             $(this).removeClass('active');
         }
     });
+    var pos = $('.list-group-item.active').position().top;
+    $('html').animate({
+        scrollTop: pos
+    },"slow", "swing");
 });
 
 $('#send').click(function() {
