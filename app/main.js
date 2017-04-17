@@ -22,7 +22,7 @@ songsRef.orderByKey().on('child_added', function(snapshot) {
     $('<li class="list-group-item"">')
       .text(msg.name)
       .append($(`<a href="${msg.url}" target="_blank" class="pull-right">`)
-        .append($('<i class="fa fa-external-link">')))
+        .append($('<i class="fa fa-external-link" style="color: white;">')))
       .appendTo('#songs');
 });
 firebase.database().ref('rooms/' + room_id).on('value', function(snapshot) {
