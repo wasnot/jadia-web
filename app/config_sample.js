@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-var config = {
+const config = {
   fb_config: {
       apiKey: "your api key",
       authDomain: "your_app_id.firebaseapp.com",

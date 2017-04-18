@@ -49,3 +49,12 @@ body {
   background-color: #84C6D2;
   border-color: #84C6D2;
 }
+#toast-container > div {
+  opacity: 1; 
+}
+.toast-success {
+  background-color: #84C6D2;
+}
+.toast-bottom-center {
+  margin-bottom: 80px;
+}
