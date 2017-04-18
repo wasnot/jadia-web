@@ -3,6 +3,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import toastr from 'toastr';
+import YouTubePlayer from 'youtube-player';
 
 import config from './config.js';
 import QueryString from './lib/querystring.js';
@@ -16,21 +17,21 @@ firebase.initializeApp(config.fb_config);
 const room_id = QueryString.parse().room_id || config.dj_room_id
 // データベースの参照を準備
 const songsRef = firebase.database().ref('songs/' + room_id)
-
 // 既存曲目を表示
 songsRef.orderByKey().on('child_added', snapshot => {
     const song = snapshot.val();
-    $('<li class="list-group-item"">')
+    $('<button class="list-group-item"">')
       .text(song.name)
       .append($(`<a href="${song.url}" target="_blank" class="pull-right">`)
         .append($('<i class="fa fa-external-link" style="color: white;">')))
+      .on('click', () => window.player.cueVideoById(song.id))
       .appendTo('#songs');
 });
 firebase.database().ref('rooms/' + room_id).on('value', snapshot => {
     const playing = snapshot.val().playing;
     console.log('playing index: ' + playing);
 
-    $('li').each(function(index) {
+    $('.list-group-item').each(function(index) {
         if (index == playing) {
             $(this).addClass('active');
         } else {
@@ -41,12 +42,12 @@ firebase.database().ref('rooms/' + room_id).on('value', snapshot => {
         scrollTop: $('.list-group-item.active').position().top
     },"slow", "swing");
 });
-window.toastr = toastr;
 toastr.options = {
     "closeButton": true,
     "timeOut": 2000,
     "positionClass": "toast-bottom-center",
-}
+};
+window.player = YouTubePlayer("player");
 
 $('#send').click(() => {
     // リクエストの追加
