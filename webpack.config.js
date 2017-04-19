@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
 module.exports = {
     entry: "./app/main.js",
@@ -31,7 +31,10 @@ module.exports = {
                     presets: ['es2015-riot']
                 }
             },
-            { test: /\.css$/, loader: "style-loader!css-loader" }
+            {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader?modules'],
+            }
         ]
     }
 };

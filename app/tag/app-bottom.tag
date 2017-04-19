@@ -1,26 +1,26 @@
 <app-bottom>
   <style scoped>
     .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 80px;
-    background-color: white;
-    z-index: 3;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 80px;
+      background-color: white;
+      z-index: 3;
     }
     .footer-container {
-    height: 100%;
+      height: 100%;
     }
     .footer-player {
-    height: 50px;
-    width: 100px;
-    margin-top: 15px;
+      height: 50px;
+      width: 100px;
+      margin-top: 15px;
     }
     .mycenter {
-    position: absolute;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+      position: absolute;
+      top: 50%;
+      left:50%;
+      transform: translate(-50%,-50%);
     }
   </style>
 

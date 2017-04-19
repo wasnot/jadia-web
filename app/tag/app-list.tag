@@ -14,7 +14,30 @@
       background-color: #84C6D2;
       border-color: #84C6D2;
     }
+    .fa {
+      color: white;
+    }
   </style>
-  
-  <ul id="songs" class="list-group"/>
+
+  <script>
+    this.songs = []
+    this.mixin('obs')
+    this.obs.on('addSong', (song) => {
+      this.songs.push(song);
+      this.update();
+    })
+    this.songClick = (song, e) => {
+      e.preventDefault();
+      this.obs.trigger('songClick', song);
+    }
+  </script>
+
+  <ul id="songs" class="list-group">
+    <button each={ song in songs } class="list-group-item" onclick={ songClick.bind(this, song) }>
+      { song.name }
+      <a href={ song.url } target="_blank" class="pull-right">
+        <i class="fa fa-external-link"/>
+      </a>
+    </button>
+  </ul>
 </app-list>
