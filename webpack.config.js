@@ -30,7 +30,8 @@ module.exports = {
                 query: {
                     presets: ['es2015-riot']
                 }
-            }
+            },
+            { test: /\.css$/, loader: "style-loader!css-loader" }
         ]
     }
 };

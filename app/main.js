@@ -8,9 +8,10 @@ import YouTubePlayer from 'youtube-player';
 import config from './config.js';
 import QueryString from './lib/querystring.js';
 import YoutubeInfo from './lib/get-youtube-info.js';
+import "css-loader!./styles/style.css";
 
-// import app from './tag/app.tag';
-// riot.mount('*')
+import app from './tag/app.tag';
+riot.mount('*')
 
 // Initialize Firebase
 firebase.initializeApp(config.fb_config);
