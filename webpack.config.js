@@ -13,7 +13,8 @@ module.exports = {
         })
     ],
     module: {
-        loaders: [{
+        loaders: [
+            {
                 test: /\.tag$/,
                 exclude: /node_modules/,
                 loader: 'riotjs-loader',

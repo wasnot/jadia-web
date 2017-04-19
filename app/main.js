@@ -24,7 +24,7 @@ songsRef.orderByKey().on('child_added', snapshot => {
       .text(song.name)
       .append($(`<a href="${song.url}" target="_blank" class="pull-right">`)
         .append($('<i class="fa fa-external-link" style="color: white;">')))
-      .on('click', () => window.player.cueVideoById(song.id))
+      .on('click', () => typeof window.player !== "undefined" && window.player.cueVideoById(song.id))
       .appendTo('#songs');
 });
 firebase.database().ref('rooms/' + room_id).on('value', snapshot => {
@@ -41,13 +41,15 @@ firebase.database().ref('rooms/' + room_id).on('value', snapshot => {
     $('html').animate({
         scrollTop: $('.list-group-item.active').position().top
     },"slow", "swing");
-});
+}); 
 toastr.options = {
     "closeButton": true,
     "timeOut": 2000,
     "positionClass": "toast-bottom-center",
 };
-window.player = YouTubePlayer("player");
+if (location.pathname == '/player') {
+    window.player = YouTubePlayer("youtube-player");
+}
 
 $('#send').click(() => {
     // リクエストの追加
