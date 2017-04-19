@@ -9,7 +9,7 @@ import riot from 'riot';
 import config from './config.js';
 import QueryString from './lib/querystring.js';
 import YoutubeInfo from './lib/get-youtube-info.js';
-import "./styles/style.css";
+// import "./styles/style.css";
 
 import app from './tag/app.tag';
 const obs = riot.observable();

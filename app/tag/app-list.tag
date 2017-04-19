@@ -1,21 +1,14 @@
 <app-list>
   <style scoped>
-    .list-group-item:nth-child(even) {
-      background-color:#777;
-      border-color: #777;
-      color:white;
-    }
-    .list-group-item:nth-child(odd) {
-      background-color:black;
-      border-color: black;
-      color:white;
-    }
-    .list-group-item.active {
-      background-color: #84C6D2;
-      border-color: #84C6D2;
-    }
     .fa {
       color: white;
+    }
+    .song {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 95%;
+      display: inline-block;
     }
   </style>
 
@@ -27,17 +20,21 @@
       this.update();
     })
     this.songClick = (song, e) => {
-      e.preventDefault();
       this.obs.trigger('songClick', song);
+      return false;
+    }
+    this.songOpen = (song, e) => {
+      e.stopPropagation();
+      window.open(song.url, '_blank');
     }
   </script>
 
   <ul id="songs" class="list-group">
-    <button each={ song in songs } class="list-group-item" onclick={ songClick.bind(this, song) }>
-      { song.name }
-      <a href={ song.url } target="_blank" class="pull-right">
+    <a hre="#" each={ song in songs } class="list-group-item" onclick={ songClick.bind(this, song) }>
+      <span class="song">{ song.name }</span>
+      <div class="pull-right" onclick={ songOpen.bind(this, song) }>
         <i class="fa fa-external-link"/>
-      </a>
-    </button>
+      </div>
+    </a>
   </ul>
 </app-list>
