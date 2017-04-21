@@ -14,13 +14,14 @@
 
 const config = {
   fb_config: {
-      apiKey: "your api key",
-      authDomain: "your_app_id.firebaseapp.com",
-      databaseURL: "https://your_app_id.firebaseio.com",
-      storageBucket: "your_app_id.appspot.com",
-      messagingSenderId: "your_sender_id"
+    apiKey: "your api key",
+    authDomain: "your_app_id.firebaseapp.com",
+    databaseURL: "https://your_app_id.firebaseio.com",
+    storageBucket: "your_app_id.appspot.com",
+    messagingSenderId: "your_sender_id"
   },
   yt_key: 'your youtube api key',
   dj_room_id: 'default room id',
+  login_host: 'gmail.com',
 }
 export default config
