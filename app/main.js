@@ -6,12 +6,13 @@ import toastr from 'toastr';
 import YouTubePlayer from 'youtube-player';
 import riot from 'riot';
 
-import config from './config.js';
 import QueryString from './lib/querystring.js';
-import YoutubeInfo from './lib/get-youtube-info.js';
+
+import config from './config.js';
+import getYoutubeInfo from './youtube.js';
+import app from './tag/app.tag';
 // import "./styles/style.css";
 
-import app from './tag/app.tag';
 const obs = riot.observable();
 riot.mixin('obs', { obs: obs });
 riot.mount('*');
@@ -57,31 +58,20 @@ toastr.options = {
 if (location.pathname == '/player') {
     window.player = YouTubePlayer("youtube-player");
 }
+window.$ = $;
 
 $('#send').click(() => {
     // リクエストの追加
-    getYoutubeInfo($('#url').val(), () => {
-        toastr.success('Request Added!');
+    getYoutubeInfo($('#url').val(), (result, video) => {
+        if (result && video) {
+            songsRef.push({ name: video.title, id: video.id, url: video.url, timestamp: new Date().getTime() });
+            toastr.success('Request Added!');
+            $('#url').val('');
+        } else {
+            toastr.error('Invalid Youtube url');
+        }
     });
 });
-
-function getYoutubeInfo(video_url, callback) {
-    const yt_video_id = YoutubeInfo.getYoutubeIdByUrl(video_url);
-    if (yt_video_id) {
-        const key = $.getJSON('https://www.googleapis.com/youtube/v3/videos?id=' + yt_video_id + '&part=snippet,contentDetails&key=' + config.yt_key + '&fields=items(id,snippet(title,thumbnails),contentDetails(duration))')
-            .done((data, status, xhr) => {
-                console.log(data);
-                const yt_response = data.items[0], // If you need more video informations, take a look on this response: data.data
-                    yt_title = yt_response.snippet.title,
-                    yt_duration = YoutubeInfo.formatSecondsAsTime(yt_response.contentDetails.duration),
-                    yt_url = 'https://www.youtube.com/watch?v=' + yt_video_id;
-                songsRef.push({ name: yt_title, id: yt_video_id, url: yt_url, timestamp: new Date().getTime() });
-                callback();
-            });
-    } else {
-        toastr.error('Invalid Youtube url');
-    }
-}
 
 function setIndex(index) {
     firebase.database().ref('rooms/' + roomId).set({ playing: index });
