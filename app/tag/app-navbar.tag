@@ -41,7 +41,7 @@ import route from 'riot-route';
     });
     firebase.auth().getRedirectResult().then((result) => {
       console.log('getRedirectResult');
-      console.log(result);
+      //console.log(result);
       if (result.credential) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
@@ -49,6 +49,7 @@ import route from 'riot-route';
       if(result.user){
         this.authed = true;
         this.userId = result.user.email;
+        this.obs.trigger('loggedIn', user);
       }
       this.updateLoginButton();
     }).catch((error) => {
@@ -65,12 +66,13 @@ import route from 'riot-route';
     });
     firebase.auth().onAuthStateChanged((user) => {
       console.log('onAuthStateChanged');
-      console.log(user);
+      //console.log(user);
       this.refs.login.classList.remove('hidden');
       if (user) {
         // User is signed in.
         this.authed = true;
         this.uesrId = user.email;
+        this.obs.trigger('loggedIn', user);
       } else {
         // No user is signed in.
       }

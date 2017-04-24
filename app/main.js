@@ -30,6 +30,26 @@ obs.on('songClick', (song) => {
 obs.on('cancelLogin', (err) => {
   toastr.error('Login canceled!');
 });
+obs.on('loggedIn', (user) => {
+  console.log('loggedIn');
+  if (typeof user === 'undefined'){
+    return;
+  }
+  firebase.database().ref('users/' + user.uid).once('value', (snapshot) => {
+    const user_data = snapshot.val();
+    console.log('user_data');
+    console.log(user_data);
+    if (user_data === null) {
+      // const playlistKey = firebase.database().ref('songs/').push({});
+      // firebase.database().ref('users/' + user.uid).set({
+      //   name: user.displayName,
+      //   playlist: {
+      //     playlistKey: true
+      //   }
+      // });
+    }
+  });
+});
 route('/playlist', () => {
   console.log('playlist');
   obs.trigger('changePage', 'personal');

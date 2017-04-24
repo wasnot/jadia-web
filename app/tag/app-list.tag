@@ -37,6 +37,10 @@
       this.songs.push(song);
       this.update();
     })
+    this.obs.on('removeAllSong', () => {
+      this.songs = [];
+      this.update();
+    })
     this.songClick = (song, e) => {
       this.obs.trigger('songClick', song);
       return false;
