@@ -4,6 +4,8 @@
       background-color: black;
       border-color: black;
       margin-bottom: 0;
+      z-index: 3;
+      border-radius: 0px;
     }
     .navbar-brand {
       position: absolute;
@@ -11,7 +13,7 @@
       padding: 0;
     }
     .brand-logo {
-      max-height: 100%;
+      max-height: 70%;
       text-align: center;
       left: 0;
       margin: 0 auto;

@@ -29,7 +29,7 @@
     }
   </script>
 
-  <ul id="songs" class="list-group">
+  <ul class="list-group">
     <a hre="#" each={ song in songs } class="list-group-item" onclick={ songClick.bind(this, song) }>
       <span class="song">{ song.name }</span>
       <div class="pull-right" onclick={ songOpen.bind(this, song) }>

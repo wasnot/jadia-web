@@ -1,5 +1,7 @@
+html, body {
+  height: 100%;
+}
 body {
-  margin-bottom: 80px;
   background-color: black;
 }
 #toast-container > div {
@@ -12,16 +14,16 @@ body {
   margin-bottom: 80px;
 }
 .list-group-item:nth-child(even) {
-  background-color:#777;
-  border-color: #777;
+  background-color:#08222C;
+  border-color: #08222C;
   color:white;
 }
 .list-group-item:nth-child(odd) {
-  background-color:black;
-  border-color: black;
+  background-color:#031217;
+  border-color: #031217;
   color:white;
 }
 .list-group-item.active {
-  background-color: #84C6D2;
-  border-color: #84C6D2;
+  color: #4BB6E9;
+  border-color: #E03028;
 }
