@@ -5,6 +5,7 @@ import 'firebase/database';
 import toastr from 'toastr';
 import YouTubePlayer from 'youtube-player';
 import riot from 'riot';
+import route from 'riot-route';
 
 import QueryString from './lib/querystring.js';
 
@@ -19,13 +20,24 @@ firebase.initializeApp(config.fb_config);
 const obs = riot.observable();
 riot.mixin('obs', { obs: obs });
 riot.mount('*');
+// observerの登録
 obs.on('songClick', (song) => {
   console.log(song);
   if (typeof window.player !== 'undefined') {
     window.player.cueVideoById(song.id);
   }
 });
-obs.trigger('changePage', 'personal');
+obs.on('cancelLogin', (err) => {
+  toastr.error('Login canceled!');
+});
+route('/playlist', () => {
+  console.log('playlist');
+  obs.trigger('changePage', 'personal');
+});
+route('/room..', () => {
+  console.log('room');
+  obs.trigger('changePage', 'party');
+});
 
 const roomId = QueryString.parse().room_id || config.dj_room_id;
 // データベースの参照を準備
