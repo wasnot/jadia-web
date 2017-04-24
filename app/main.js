@@ -64,7 +64,13 @@ $('#send').click(() => {
   // リクエストの追加
   getYoutubeInfo($('#url').val(), (result, video) => {
     if (result && video) {
-      songsRef.push({ name: video.title, id: video.id, url: video.url, timestamp: new Date().getTime() });
+      songsRef.push({
+        name: video.title,
+        id: video.id,
+        url: video.url,
+        thumb: video.thumb,
+        timestamp: new Date().getTime(),
+      });
       toastr.success('Request Added!');
       $('#url').val('');
     } else {

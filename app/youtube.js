@@ -4,10 +4,11 @@ import YoutubeInfo from './lib/get-youtube-info.js';
 import config from './config.js';
 
 class YoutubeVideo {
-  constructor(title, url, id) {
+  constructor(title, url, id, thumb) {
     this.title = title;
     this.url = url;
     this.id = id;
+    this.thumb = thumb;
   }
 }
 
@@ -20,12 +21,17 @@ function getYoutubeInfo(video_url, callback) {
         const yt_response = data.items[0], // If you need more video informations, take a look on this response: data.data
           yt_title = yt_response.snippet.title,
           yt_duration = YoutubeInfo.formatSecondsAsTime(yt_response.contentDetails.duration),
+          yt_thumb = yt_response.snippet.thumbnails.default.url,
           yt_url = 'https://www.youtube.com/watch?v=' + yt_video_id;
-        const video = new YoutubeVideo(yt_title, yt_url, yt_video_id);
-        callback(true, video);
+        const video = new YoutubeVideo(yt_title, yt_url, yt_video_id, yt_thumb);
+        if (typeof callback === 'function'){
+          callback(true, video);
+        }
       });
   } else {
-    callback(false);
+    if (typeof callback === 'function'){
+      callback(false);
+    }
   }
 }
 export default getYoutubeInfo
