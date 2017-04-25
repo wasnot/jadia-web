@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 <app-list>
   <style scoped>
     .fa {
@@ -41,21 +43,33 @@
       this.songs = [];
       this.update();
     })
-    this.songClick = (song, e) => {
-      this.obs.trigger('songClick', song);
+    this.obs.on('changeIndex', (index) => {
+      this.songs.forEach((v, k)=>{v.selected = false;})
+      this.songs[index].selected = true;
+      this.update();
+      const list = $('app-list');
+      const playingSong = $('.list-group-item.active');
+      if (typeof playingSong !== 'undefined' && playingSong.length != 0) {
+        list.animate({
+          scrollTop:  list.scrollTop() + playingSong.position().top - list.position().top
+        }, "slow", "swing");
+      };
+    })
+    this.songClick = (e) => {
+      this.obs.trigger('songClick', e.item.song);
       return false;
     }
-    this.songOpen = (song, e) => {
+    this.songOpen = (e) => {
       e.stopPropagation();
-      window.open(song.url, '_blank');
+      window.open(e.item.song.url, '_blank');
     }
   </script>
 
   <ul class="list-group">
-    <a hre="#" each={ song in songs } class="list-group-item song-list" onclick={ songClick.bind(this, song) }>
+    <a hre="#" each={ song in songs } class="list-group-item song-list { active: song.selected}" onclick={ songClick }>
       <div style='background-image: url({ song.thumb });' class='song-thumb'/>
       <span class="song-title">{ song.name }</span>
-      <div class="song-action" onclick={ songOpen.bind(this, song) }>
+      <div class="song-action" onclick={ songOpen }>
         <i class="fa fa-external-link"/>
       </div>
     </a>
