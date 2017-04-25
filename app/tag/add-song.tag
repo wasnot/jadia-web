@@ -3,10 +3,7 @@ import getYoutubeInfo from '../youtube.js';
 <add-song>
   <style scoped>
     .request-box {
-      display: inline-block;
-      width: 80%;
-      margin-left: 2px;
-      margin-right: 34px;
+      width: 100%;
       background-color: #e6e6e6;
       border-radius: 4px;
     }

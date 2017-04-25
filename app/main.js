@@ -15,7 +15,6 @@ import app from './tag/app.tag';
 // Initialize Firebase
 firebase.initializeApp(config.fb_config);
 
-const player = YouTubePlayer("youtube-player");
 const obs = riot.observable();
 riot.mixin('obs', { obs: obs });
 riot.mount('*');
@@ -71,6 +70,7 @@ route('/room..', () => {
   console.log('room');
   obs.trigger('changePage', 'party');
 });
+const player = YouTubePlayer("youtube-player");
 
 const roomId = QueryString.parse().room_id || config.dj_room_id;
 // データベースの参照を準備

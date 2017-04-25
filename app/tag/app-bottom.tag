@@ -24,6 +24,11 @@ import add_song from './add-song.tag';
       width: 32px;
       height: 32px;
     }
+    add-song {
+      display: inline-block;
+      width: 80%;
+      margin-left: 2px;
+    }
   </style>
 
   <script>
