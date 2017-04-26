@@ -55,6 +55,16 @@ import app_bottom from './app-bottom.tag';
     this.obs.on('changePage', (page) => {
       this.refs.roomColor.style.backgroundColor = color[page];
     })
+    this.on('mount', () => {
+      switch (location.pathname) {
+        case '/room':
+          this.refs.roomColor.style.backgroundColor = color['party'];
+          break;
+        case '/playlist':
+          this.refs.roomColor.style.backgroundColor = color['personal'];
+          break;
+      }
+    })
   </script>
 
   <div ref='roomColor' class='room-color'/>

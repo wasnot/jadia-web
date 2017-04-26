@@ -14,7 +14,21 @@ import app from './tag/app.tag';
 
 // Initialize Firebase
 firebase.initializeApp(config.fb_config);
+let songsRef = null;
+let songsListId = config.dj_room_id;
 
+// riot initialize
+route.base('/');
+route('/playlist', () => {
+  console.log('playlist');
+  obs.trigger('changePage', 'personal');
+});
+route('/room..', () => {
+  const q = route.query()
+  const roomId = q.room_id || config.dj_room_id
+  console.log('room ' + roomId);
+  obs.trigger('changePage', 'party');
+});
 const obs = riot.observable();
 riot.mixin('obs', { obs: obs });
 riot.mount('*');
@@ -62,37 +76,36 @@ obs.on('songAdded', (video) => {
     toastr.error('Invalid Youtube url');
   }
 });
-route('/playlist', () => {
-  console.log('playlist');
-  obs.trigger('changePage', 'personal');
-});
-route('/room..', () => {
-  console.log('room');
-  obs.trigger('changePage', 'party');
-});
+// player initialize
 const player = YouTubePlayer("youtube-player");
-
-const roomId = QueryString.parse().room_id || config.dj_room_id;
-// データベースの参照を準備
-const songsRef = firebase.database().ref('songs/' + roomId);
-// 既存曲目を表示
-songsRef.orderByKey().on('child_added', snapshot => {
-  const song = snapshot.val();
-  obs.trigger('addSong', song);
-});
-firebase.database().ref('rooms/' + roomId).on('value', snapshot => {
-  const playing = snapshot.val().playing;
-  console.log('playing index: ' + playing);
-  obs.trigger('changeIndex', playing);
-});
+// toastr inisialize
 toastr.options = {
   "closeButton": true,
   "timeOut": 2000,
   "positionClass": "toast-bottom-center",
 };
 
+const updateList = () => {
+  const roomId = QueryString.parse().room_id || config.dj_room_id;
+  // データベースの参照を準備
+  songsRef = firebase.database().ref('songs/' + roomId);
+  // 既存曲目を表示
+  songsRef.orderByKey().on('child_added', snapshot => {
+    const song = snapshot.val();
+    obs.trigger('addSong', song);
+  });
+  firebase.database().ref('rooms/' + roomId).on('value', snapshot => {
+    const playing = snapshot.val().playing;
+    console.log('playing index: ' + playing);
+    obs.trigger('changeIndex', playing);
+  });
+}
+updateList();
+
 import $ from 'jquery';
 window.$ = $;
+window.route = route;
+window.firebase = firebase;
 
 function setIndex(index) {
   firebase.database().ref('rooms/' + roomId).set({ playing: index });

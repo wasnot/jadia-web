@@ -41,9 +41,7 @@ import add_song from './add-song.tag';
         return;
       }
       const url = user.photoURL;
-      const imgPreloader = new Image();
-      imgPreloader.onload = () => this.refs.icon.src = url;
-      imgPreloader.src = url;
+      this.refs.icon.src = url;
     })
   </script>
 
@@ -52,7 +50,7 @@ import add_song from './add-song.tag';
       <div class="col-sm-6">
         <div class='bottom-bar'>
           <div class='prof-icon'>
-            <img src='' alt='' class='img-circle' ref='icon' crossorigin="Anonymous"/>
+            <img src='' alt='' class='img-circle' ref='icon' referrerpolicy="no-referrer"/>
           </div>
           <add-song/>
         </div>
