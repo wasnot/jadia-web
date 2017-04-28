@@ -1,7 +1,8 @@
 import $ from 'jquery';
+import '../styles/list.css';
 
 <app-list>
-  <style scoped>
+  <style>
     .fa {
       color: white;
     }
@@ -49,7 +50,7 @@ import $ from 'jquery';
       this.update();
       const list = $('app-list');
       const playingSong = $('.list-group-item.active');
-      if (typeof playingSong !== 'undefined' && playingSong.length != 0) {
+      if (playingSong != null && playingSong.length != 0) {
         list.animate({
           scrollTop:  list.scrollTop() + playingSong.position().top - list.position().top
         }, "slow", "swing");

@@ -1,5 +1,6 @@
 import getYoutubeInfo from '../youtube.js';
 import add_song from './add-song.tag';
+import profile from './profile.tag';
 
 <app-bottom>
   <style scoped>
@@ -15,15 +16,6 @@ import add_song from './add-song.tag';
       margin-right: auto;
       margin-left: auto;
     }
-    .prof-icon {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-    }
-    .img-circle {
-      width: 32px;
-      height: 32px;
-    }
     add-song {
       display: inline-block;
       width: 80%;
@@ -31,27 +23,11 @@ import add_song from './add-song.tag';
     }
   </style>
 
-  <script>
-    this.mixin('obs')
-    this.obs.on('changePage', (page) => {
-      //this.refs.roomColor.style.backgroundColor = color[page];
-    })
-    this.obs.on('loggedIn', (user) => {
-      if (typeof user === 'undefined') {
-        return;
-      }
-      const url = user.photoURL;
-      this.refs.icon.src = url;
-    })
-  </script>
-
   <div class='container bottom-fix'>
     <div class='row'>
       <div class="col-sm-6">
         <div class='bottom-bar'>
-          <div class='prof-icon'>
-            <img src='' alt='' class='img-circle' ref='icon' referrerpolicy="no-referrer"/>
-          </div>
+          <profile/>
           <add-song/>
         </div>
       </div>

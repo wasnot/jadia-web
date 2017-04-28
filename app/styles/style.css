@@ -1,13 +1,6 @@
+html, body {
+  height: 100%;
+}
 body {
-  margin-bottom: 80px;
   background-color: black;
-}
-#toast-container > div {
-  opacity: 1; 
-}
-.toast-success {
-  background-color: #84C6D2;
-}
-.toast-bottom-center {
-  margin-bottom: 80px;
 }

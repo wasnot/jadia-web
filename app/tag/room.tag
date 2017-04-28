@@ -1,4 +1,5 @@
 import route from 'riot-route';
+import '../styles/navbar.css';
 
 <room>
   <script>
@@ -55,6 +56,6 @@ import route from 'riot-route';
   </script>
 
   <li class='hidden' ref='room'><a href="#" onclick={ changeRoom }>
-    <span class='header-button' ref='roomText'>PARTY MODE</span>
+    <span class='navbar-button' ref='roomText'>PARTY MODE</span>
   </a></li>
 </room>

@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import config from '../config.js';
+import '../styles/navbar.css';
 
 <login>
   <script>
@@ -7,7 +9,7 @@ import firebase from 'firebase';
     this.mixin('obs');
     this.provider = new firebase.auth.GoogleAuthProvider();
     this.provider.setCustomParameters({
-        hd: "colorful-board.com"
+        hd: config.login_host
     });
     firebase.auth().getRedirectResult().then((result) => {
       console.log('getRedirectResult');
@@ -19,7 +21,7 @@ import firebase from 'firebase';
       if(result.user){
         this.authed = true;
         this.userId = result.user.email;
-        this.obs.trigger('loggedIn', user);
+        //this.obs.trigger('authChecked', user);
         this.updateLoginButton();
       }
     }).catch((error) => {
@@ -34,20 +36,22 @@ import firebase from 'firebase';
       var credential = error.credential;
       this.updateLoginButton();
     });
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log('onAuthStateChanged');
-      //console.log(user);
-      this.refs.login.classList.remove('hidden');
-      if (user) {
-        // User is signed in.
-        this.authed = true;
-        this.uesrId = user.email;
-        this.obs.trigger('loggedIn', user);
-      } else {
-        // No user is signed in.
-      }
-      this.updateLoginButton();
-    });
+    this.obs.on('auth', () => {
+      firebase.auth().onAuthStateChanged((user) => {
+        console.log('onAuthStateChanged');
+        this.refs.login.classList.remove('hidden');
+        if (user) {
+          // User is signed in.
+          this.authed = true;
+          this.uesrId = user.email;
+        } else {
+          // No user is signed in.
+          this.authed = false;
+        }
+        this.obs.trigger('authChecked', user);
+        this.updateLoginButton();
+      });
+    })
     this.toggleLogin = (e) => {
       e.preventDefault();
       if (this.authed) {
@@ -73,6 +77,6 @@ import firebase from 'firebase';
   </script>
 
   <li class='hidden' ref='login'><a href="#" onclick={ toggleLogin }>
-    <span class='header-button' ref='loginText'>LOGIN</span>
+    <span class='navbar-button' ref='loginText'>LOGIN</span>
   </a></li>
 </login>

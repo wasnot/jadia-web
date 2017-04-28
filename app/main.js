@@ -10,7 +10,8 @@ import QueryString from './lib/querystring.js';
 
 import config from './config.js';
 import app from './tag/app.tag';
-// import "./styles/style.css";
+import "./styles/style.css";
+import "./styles/toastr.css";
 
 // Initialize Firebase
 firebase.initializeApp(config.fb_config);
@@ -26,7 +27,7 @@ route('/playlist', () => {
 route('/room..', () => {
   const q = route.query()
   const roomId = q.room_id || config.dj_room_id
-  console.log('room ' + roomId);
+  console.log(`room ${roomId}`);
   obs.trigger('changePage', 'party');
 });
 const obs = riot.observable();
@@ -35,31 +36,38 @@ riot.mount('*');
 // observerの登録
 obs.on('songClick', (song) => {
   console.log(song);
-  if (typeof player !== 'undefined') {
+  if (player != null) {
     player.cueVideoById(song.id);
   }
 });
 obs.on('cancelLogin', (err) => {
   toastr.error('Login canceled!');
 });
-obs.on('loggedIn', (user) => {
-  console.log('loggedIn');
-  if (typeof user === 'undefined'){
+obs.on('authChecked', (user) => {
+  // 初回のauth check
+  if (user == null){
+    updateList();
     return;
   }
-  firebase.database().ref('users/' + user.uid).once('value', (snapshot) => {
+  firebase.database().ref(`users/${user.uid}`).once('value', (snapshot) => {
     const user_data = snapshot.val();
     console.log('user_data');
     console.log(user_data);
-    if (user_data === null) {
-      const playlistKey = firebase.database().ref('songs/').push({});
-      firebase.database().ref('users/' + user.uid).set({
+    let playlistKey;
+    if (user_data == null || user_data.playlist == null) {
+      const playlist = firebase.database().ref('songs/').push({});
+      playlistKey = playlist.key;
+      firebase.database().ref(`users/${user.uid}`).set({
         name: user.displayName,
-        playlist: {
-          playlistKey: true
+        playlist: { 
+          [playlistKey]: true
         }
       });
+    } else {
+      playlistKey = Object.keys(user_data.playlist)[0]
     }
+    console.log(`playlist: ${playlistKey}`);
+    updateList(playlistKey);
   });
 });
 obs.on('songAdded', (video) => {
@@ -76,6 +84,7 @@ obs.on('songAdded', (video) => {
     toastr.error('Invalid Youtube url');
   }
 });
+obs.trigger('auth');
 // player initialize
 const player = YouTubePlayer("youtube-player");
 // toastr inisialize
@@ -85,22 +94,36 @@ toastr.options = {
   "positionClass": "toast-bottom-center",
 };
 
-const updateList = () => {
-  const roomId = QueryString.parse().room_id || config.dj_room_id;
+const updateList = (listId=null) => {
+  let isRoom = false;
+  if (listId == null) {
+    isRoom = true;
+    listId = QueryString.parse().room_id || config.dj_room_id;
+  }
+  if (listId === songsListId) {
+    // 変更なしなら何もしない
+    return;
+  } else if(songsListId != null) {
+    // 変更されていた場合, リスナーを解除
+    firebase.database().ref(`songs/${songsListId}`).off();
+    firebase.database().ref(`rooms/${songsListId}`).off();
+  }
+  songsListId = listId;
   // データベースの参照を準備
-  songsRef = firebase.database().ref('songs/' + roomId);
+  songsRef = firebase.database().ref(`songs/${songsListId}`);
   // 既存曲目を表示
   songsRef.orderByKey().on('child_added', snapshot => {
     const song = snapshot.val();
     obs.trigger('addSong', song);
   });
-  firebase.database().ref('rooms/' + roomId).on('value', snapshot => {
-    const playing = snapshot.val().playing;
-    console.log('playing index: ' + playing);
-    obs.trigger('changeIndex', playing);
-  });
+  if (isRoom) {
+    firebase.database().ref(`rooms/${songsListId}`).on('value', snapshot => {
+      const playing = snapshot.val().playing;
+      console.log(`playing index: ${playing}`);
+      obs.trigger('changeIndex', playing);
+    });
+  }
 }
-updateList();
 
 import $ from 'jquery';
 window.$ = $;
@@ -108,5 +131,5 @@ window.route = route;
 window.firebase = firebase;
 
 function setIndex(index) {
-  firebase.database().ref('rooms/' + roomId).set({ playing: index });
+  firebase.database().ref(`rooms/${roomId}`).set({ playing: index });
 }

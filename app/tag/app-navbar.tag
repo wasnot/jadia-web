@@ -21,14 +21,6 @@ import room from './room.tag';
       left: 0;
       margin: 0 auto;
     }
-    .header-button {
-      border:solid 1px white;
-      color: white;
-      padding: 5px 40px;
-    }
-    .header-button:hover {
-      color: gray;
-    }
   </style>
 
   <nav class="navbar navbar-inverse">
