@@ -17,8 +17,10 @@
     })
     this.obs.on('authChecked', (user) => {
       if (user == null) {
+        this.refs.icon.classList.add('hidden');
         return;
       }
+      this.refs.icon.classList.remove('hidden');
       const url = user.photoURL;
       this.refs.icon.src = url;
       this.refs.icon.title = user.displayName;
