@@ -1,6 +1,5 @@
-import getYoutubeInfo from '../youtube.js';
-import add_song from './add-song.tag';
-import profile from './profile.tag';
+import add_song from 'tags/add-song.tag';
+import profile from 'tags/profile.tag';
 
 <app-bottom>
   <style scoped>

@@ -1,7 +1,8 @@
-import app_navbar from './app-navbar.tag';
-import app_list from './app-list.tag';
-import app_view from './app-view.tag';
-import app_bottom from './app-bottom.tag';
+import event from 'event.js';
+import app_navbar from 'tags/app-navbar.tag';
+import app_list from 'tags/app-list.tag';
+import app_view from 'tags/app-view.tag';
+import app_bottom from 'tags/app-bottom.tag';
 
 <app>
   <style scoped>
@@ -52,7 +53,7 @@ import app_bottom from './app-bottom.tag';
       'ai': '#FEEF50',
     }
     this.mixin('obs')
-    this.obs.on('changePage', (page) => {
+    this.obs.on(event.page.changed, (page) => {
       this.refs.roomColor.style.backgroundColor = color[page];
     })
     this.on('mount', () => {

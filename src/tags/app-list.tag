@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import '../styles/list.css';
+import 'styles/list.css';
+import event from 'event.js';
 
 <app-list>
   <style>
@@ -36,15 +37,15 @@ import '../styles/list.css';
   <script>
     this.songs = []
     this.mixin('obs')
-    this.obs.on('addSong', (song) => {
+    this.obs.on(event.song.add, (song) => {
       this.songs.push(song);
       this.update();
     })
-    this.obs.on('removeAllSong', () => {
+    this.obs.on(event.song.removeAll, () => {
       this.songs = [];
       this.update();
     })
-    this.obs.on('changeIndex', (index) => {
+    this.obs.on(event.index.changed, (index) => {
       this.songs.forEach((v, k)=>{v.selected = false;})
       this.songs[index].selected = true;
       this.update();
@@ -57,7 +58,7 @@ import '../styles/list.css';
       };
     })
     this.songClick = (e) => {
-      this.obs.trigger('songClick', e.item.song);
+      this.obs.trigger(event.song.click, e.item.song);
       return false;
     }
     this.songOpen = (e) => {

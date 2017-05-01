@@ -1,5 +1,5 @@
-import login from './login.tag';
-import room from './room.tag';
+import login from 'tags/login.tag';
+import room from 'tags/room.tag';
 
 <app-navbar>
   <style scoped>

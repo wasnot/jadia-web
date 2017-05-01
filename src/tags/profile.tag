@@ -1,3 +1,5 @@
+import event from 'event.js';
+
 <profile>
   <style>
     .prof-icon {
@@ -12,10 +14,10 @@
   </style>
   <script>
     this.mixin('obs')
-    this.obs.on('changePage', (page) => {
+    this.obs.on(event.page.changed, (page) => {
       //this.refs.roomColor.style.backgroundColor = color[page];
     })
-    this.obs.on('authChecked', (user) => {
+    this.obs.on(event.auth.checked, (user) => {
       if (user == null) {
         this.refs.icon.classList.add('hidden');
         return;

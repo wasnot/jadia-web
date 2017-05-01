@@ -1,3 +1,5 @@
+import player from 'tags/player.tag';
+
 <app-view>
   <style scoped>
     .player {
@@ -5,5 +7,5 @@
     }
   </style>
 
-  <div id="youtube-player" class='player'/>
+  <player id="youtube-player" class='player'/>
 </app-view>

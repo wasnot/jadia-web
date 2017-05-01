@@ -1,16 +1,8 @@
 import $ from 'jquery';
-import YoutubeInfo from './lib/get-youtube-info.js';
+import YoutubeInfo from 'libs/get-youtube-info.js';
 
-import config from './config.js';
-
-class YoutubeVideo {
-  constructor(title, url, id, thumb) {
-    this.title = title;
-    this.url = url;
-    this.id = id;
-    this.thumb = thumb;
-  }
-}
+import config from 'config.js';
+import YoutubeVideo from 'models/youtube-video.js';
 
 function getYoutubeInfo(video_url, callback) {
   const yt_video_id = YoutubeInfo.getYoutubeIdByUrl(video_url);
@@ -23,7 +15,12 @@ function getYoutubeInfo(video_url, callback) {
           yt_duration = YoutubeInfo.formatSecondsAsTime(yt_response.contentDetails.duration),
           yt_thumb = yt_response.snippet.thumbnails.default.url,
           yt_url = `https://www.youtube.com/watch?v=${yt_video_id}`;
-        const video = new YoutubeVideo(yt_title, yt_url, yt_video_id, yt_thumb);
+        const video = new YoutubeVideo({
+          title: yt_title,
+          url: yt_url,
+          id: yt_video_id,
+          thumb: yt_thumb
+        });
         if (typeof callback === 'function'){
           callback(true, video);
         }

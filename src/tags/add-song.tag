@@ -1,4 +1,5 @@
-import getYoutubeInfo from '../youtube.js';
+import getYoutubeInfo from 'utils/youtube.js';
+import event from 'event.js';
 
 <add-song>
   <style scoped>
@@ -41,9 +42,9 @@ import getYoutubeInfo from '../youtube.js';
       getYoutubeInfo(this.refs.url.value, (result, video) => {
         if (result && video) {
           this.refs.url.value = '';
-          this.obs.trigger('songAdded', video);
+          this.obs.trigger(event.song.added, video);
         } else {
-          this.obs.trigger('songAdded', null);
+          this.obs.trigger(event.song.added, null);
         }
       });
     }

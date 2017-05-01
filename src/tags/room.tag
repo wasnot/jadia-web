@@ -1,5 +1,6 @@
 import route from 'riot-route';
-import '../styles/navbar.css';
+import 'styles/navbar.css';
+import event from 'event.js';
 
 <room>
   <script>
@@ -16,7 +17,7 @@ import '../styles/navbar.css';
           break;
       }
     })
-    this.obs.on('updateAuth', (authed) => {
+    this.obs.on(event.auth.updated, (authed) => {
       if (authed) {
         this.authed = true;
         if (location.pathname === '/') {
