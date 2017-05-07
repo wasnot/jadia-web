@@ -32,8 +32,6 @@ export default class Player {
         })
         .getVolume()
         .then(volume => {
-          console.log(this.playlist);
-          console.log(this.playlist[playingIndex]);
           if (volume !== this.playlist[playingIndex].volume) {
             this.playlist[playingIndex].volume = volume;
           }
