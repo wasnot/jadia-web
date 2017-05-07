@@ -10,11 +10,10 @@ const PlayerState = {
 };
 
 export default class Player {
-  constructor(elid="youtube-player") {
-    this.prepared = false;
+  constructor(elementId="youtube-player") {
     this.playlist = [];
     this.playing = 0;
-    this.player = YouTubePlayer(elid);
+    this.player = YouTubePlayer(elementId);
     this.player.on('stateChange', this.stateChanged.bind(this));
   }
 
@@ -24,8 +23,17 @@ export default class Player {
     // Play a next video automatically when the previous video ended.
     if (event.data === PlayerState.ENDED) {
       // All methods of youtube-player return Promise.
-      this.player.getVolume()
+      let videoId = null;
+      this.player
+        .getVideoData()
+        .then(data => {
+          videoId = data['video_id'];
+          return Promise.resolve(this.player);
+        })
+        .getVolume()
         .then(volume => {
+          console.log(this.playlist);
+          console.log(this.playlist[playingIndex]);
           if (volume !== this.playlist[playingIndex].volume) {
             this.playlist[playingIndex].volume = volume;
           }
@@ -33,16 +41,17 @@ export default class Player {
         })
         .then(() => {
           // 次の曲を再生
+          console.log(this);
+          console.log(this.playlist);
           const playIndex = this.getPlayingIndex();
+          console.log((playIndex + 1) % this.playlist.length);
           const nextPlayingMusic = this.playlist[(playIndex + 1) % this.playlist.length];
           this.setVideo(nextPlayingMusic);
           // this.opts.onNextMusic(nextPlayingMusic.id, playlist, true);
         });
     // When player started after the first video is added to empty playlist.
-  } else if (event.data === PlayerState.NOTSTART) {
-      if (!this.prepared) {
-        this.setVideo();
-      }
+    } else if (event.data === PlayerState.NOTSTART) {
+      // this.setVideo();
     }
   }
   getPlayingIndex() {
@@ -50,11 +59,11 @@ export default class Player {
   }
   setVideo(index=0) {
     console.log(`setVideo ${index}`)
-    if (!this.prepared && this.playlist.length > 0) {
+    if (this.playlist.length > 0) {
       console.log(`setVideo`)
+      this.player.getPlayingIndex
       this.player.cueVideoById(this.playlist[index].id);
       this.player.setVolume(this.playlist[index].volume);
-      this.prepared = true;
     }
   }
   selectSong(song) {
