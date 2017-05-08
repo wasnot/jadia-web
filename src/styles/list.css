@@ -1,0 +1,14 @@
+.list-group-item:nth-child(even) {
+  background-color:#08222C;
+  border-color: #08222C;
+  color:white;
+}
+.list-group-item:nth-child(odd) {
+  background-color:#031217;
+  border-color: #031217;
+  color:white;
+}
+.list-group-item.active {
+  color: #4BB6E9;
+  border-color: #E03028;
+}

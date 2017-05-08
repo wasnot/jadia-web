@@ -1,9 +1,14 @@
+import login from 'tags/login.tag';
+import mode from 'tags/mode.tag';
+
 <app-navbar>
   <style scoped>
     .navbar {
       background-color: black;
       border-color: black;
       margin-bottom: 0;
+      z-index: 3;
+      border-radius: 0px;
     }
     .navbar-brand {
       position: absolute;
@@ -11,20 +16,24 @@
       padding: 0;
     }
     .brand-logo {
-      max-height: 100%;
+      max-height: 70%;
       text-align: center;
       left: 0;
       margin: 0 auto;
     }
   </style>
 
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">
-          <img alt="Brand" src="img/jadia_logo0307.png" class="brand-logo">
+          <img alt="JADIA" src="img/jadia_logo0307.png" class="brand-logo">
         </a>
       </div>
+      <ul class="nav navbar-nav navbar-right">
+        <virtual data-is='login'/>
+        <virtual data-is='mode'/>
+      </ul>
     </div>
   </nav>
 </app-navbar>

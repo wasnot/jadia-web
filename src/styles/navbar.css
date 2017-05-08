@@ -1,0 +1,8 @@
+.navbar-button {
+  border:solid 1px white;
+  color: white;
+  padding: 5px 40px;
+}
+.navbar-button:hover {
+  color: gray;
+}

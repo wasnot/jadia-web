@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "tags/": ["src/tags/*"],
+      "utils/": ["src/utils/*"],
+      "libs/": ["src/libs/*"],
+      "models/": ["src/models/*"]
+    }
+  }
+}
