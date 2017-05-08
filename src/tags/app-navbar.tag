@@ -1,5 +1,5 @@
 import login from 'tags/login.tag';
-import room from 'tags/room.tag';
+import mode from 'tags/mode.tag';
 
 <app-navbar>
   <style scoped>
@@ -32,7 +32,7 @@ import room from 'tags/room.tag';
       </div>
       <ul class="nav navbar-nav navbar-right">
         <virtual data-is='login'/>
-        <virtual data-is='room'/>
+        <virtual data-is='mode'/>
       </ul>
     </div>
   </nav>

@@ -7,5 +7,5 @@ import player from 'tags/player.tag';
     }
   </style>
 
-  <player id="youtube-player" class='player'/>
+  <player class='player'/>
 </app-view>

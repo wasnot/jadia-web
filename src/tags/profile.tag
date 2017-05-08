@@ -15,7 +15,6 @@ import event from 'event.js';
   <script>
     this.mixin('obs')
     this.obs.on(event.page.changed, (page) => {
-      //this.refs.roomColor.style.backgroundColor = color[page];
     })
     this.obs.on(event.auth.checked, (user) => {
       if (user == null) {

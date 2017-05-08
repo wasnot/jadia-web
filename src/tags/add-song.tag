@@ -42,9 +42,9 @@ import event from 'event.js';
       getYoutubeInfo(this.refs.url.value, (result, video) => {
         if (result && video) {
           this.refs.url.value = '';
-          this.obs.trigger(event.song.added, video);
+          this.obs.trigger(event.songDb.add, video);
         } else {
-          this.obs.trigger(event.song.added, null);
+          this.obs.trigger(event.songDb.add, null);
         }
       });
     }

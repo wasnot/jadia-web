@@ -6,20 +6,21 @@ const event = {
     cancel: 'auth:cancel',
   },
   page: {
+    request: 'page:request',
     changed: 'page:changed',
   },
   song: {
     removeAll: 'song:removeAll',
+    remove: 'song:remove',
     add: 'song:add',
-    added: 'song:added',
     click: 'song:click',
+  },
+  songDb: {
+    remove: 'songDb:remove',
+    add: 'songDb:add',
   },
   index: {
     changed: 'index:changed',
-  },
-  playlist: {
-    changed: 'playlist:changed',
-    select: 'playlist:select',
   },
 }
 export default event;

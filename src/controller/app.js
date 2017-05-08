@@ -17,14 +17,14 @@ class App {
 
     route('/playlist', () => {
       console.log('playlist');
-      this.obs.trigger(event.page.changed, 'personal');
+      this.obs.trigger(event.page.changed, 'playlist');
       this.obs.trigger(event.auth.request);
     });
     route('/room..', () => {
       const q = QueryString.parse();
       const roomId = q.room_id || config.dj_room_id;
       console.log(`room ${roomId}`);
-      this.obs.trigger(event.page.changed, 'party');
+      this.obs.trigger(event.page.changed, 'room');
       this.updateList();
     });
 
@@ -55,7 +55,17 @@ class App {
           console.log(err);
         });
     });
-    this.obs.on(event.song.added, (video) => {
+    this.obs.on(event.page.request, (page) => {
+      switch (page) {
+        case 'room':
+          route('/room')
+          break;
+        case 'playlist':
+          route('/playlist')
+          break;
+      }
+    });
+    this.obs.on(event.songDb.add, (video) => {
       if (video !== null) {
         this.songsRef.push({
           name: video.title,
@@ -67,6 +77,11 @@ class App {
         toastr.success('Request Added!');
       } else {
         toastr.error('Invalid Youtube url');
+      }
+    });
+    this.obs.on(event.songDb.remove, (song) => {
+      if (song != null && song.key != null) {
+        firebase.database().ref(`songs/${this.songsListId}/${song.key}`).remove();
       }
     });
     // authのリクエスト
@@ -97,7 +112,14 @@ class App {
     this.songsRef = firebase.database().ref(`songs/${this.songsListId}`);
     // 既存曲目を表示
     this.songsRef.orderByKey().on('child_added', snapshot => {
-      this.obs.trigger(event.song.add, snapshot.val());
+      const song = snapshot.val();
+      song['key'] = snapshot.key;
+      this.obs.trigger(event.song.add, song);
+    });
+    this.songsRef.orderByKey().on('child_removed', snapshot => {
+      const song = snapshot.val();
+      song['key'] = snapshot.key;
+      this.obs.trigger(event.song.remove, song);
     });
     if (isRoom) {
       // roomならindexの監視

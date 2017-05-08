@@ -6,7 +6,7 @@ import app_bottom from 'tags/app-bottom.tag';
 
 <app>
   <style scoped>
-    .room-color {
+    .mode-color {
       position: absolute;
       width: 50%;
       height: 100%;
@@ -48,27 +48,27 @@ import app_bottom from 'tags/app-bottom.tag';
 
   <script>
     const color = {
-      'personal': '#4BB6E9',
-      'party': '#DD76A3',
+      'playlist': '#4BB6E9',
+      'room': '#DD76A3',
       'ai': '#FEEF50',
     }
     this.mixin('obs')
     this.obs.on(event.page.changed, (page) => {
-      this.refs.roomColor.style.backgroundColor = color[page];
+      this.refs.modeColor.style.backgroundColor = color[page];
     })
     this.on('mount', () => {
       switch (location.pathname) {
         case '/room':
-          this.refs.roomColor.style.backgroundColor = color['party'];
+          this.refs.modeColor.style.backgroundColor = color['room'];
           break;
         case '/playlist':
-          this.refs.roomColor.style.backgroundColor = color['personal'];
+          this.refs.modeColor.style.backgroundColor = color['playlist'];
           break;
       }
     })
   </script>
 
-  <div ref='roomColor' class='room-color'/>
+  <div ref='modeColor' class='mode-color'/>
   <div class='height-fill'>
     <div class='container'>
       <app-navbar/>

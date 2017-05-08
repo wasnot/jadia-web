@@ -36,9 +36,31 @@ import event from 'event.js';
 
   <script>
     this.songs = []
+    this.mode = 'room'
     this.mixin('obs')
+    switch (location.pathname) {
+      case '/room':
+        this.mode = 'room';
+        break;
+      case '/playlist':
+        this.mode = 'playlist';
+        break;
+    }
+    this.obs.on(event.page.changed, (page) => {
+      this.mode = page;
+      this.update();
+    })
     this.obs.on(event.song.add, (song) => {
       this.songs.push(song);
+      this.update();
+    })
+    this.obs.on(event.song.remove, (song) => {
+      const target = this.songs.findIndex((v) => v.key == song.key);
+      if (target != -1) {
+        this.songs.splice(target, 1);
+      }
+      console.log(`removelist: ${target}`)
+      // this.songs.(song);
       this.update();
     })
     this.obs.on(event.song.removeAll, () => {
@@ -65,14 +87,21 @@ import event from 'event.js';
       e.stopPropagation();
       window.open(e.item.song.url, '_blank');
     }
+    this.songRemove = (e) => {
+      e.stopPropagation();
+      this.obs.trigger(event.songDb.remove, e.item.song);
+    }
   </script>
 
   <ul class="list-group">
     <a hre="#" each={ song in songs } class="list-group-item song-list { active: song.selected}" onclick={ songClick }>
       <div style='background-image: url({ song.thumb });' class='song-thumb'/>
       <span class="song-title">{ song.name }</span>
-      <div class="song-action" onclick={ songOpen }>
+      <div class="song-action { hidden: this.mode != 'room' }" onclick={ songOpen }>
         <i class="fa fa-external-link"/>
+      </div>
+      <div class="song-action { hidden: this.mode != 'playlist' }" onclick={ songRemove }>
+        <i class="fa fa-remove"/>
       </div>
     </a>
   </ul>
