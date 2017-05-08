@@ -36,18 +36,10 @@ import event from 'event.js';
 
   <script>
     this.songs = []
-    this.mode = 'room'
+    this.mixin('state')
     this.mixin('obs')
-    switch (location.pathname) {
-      case '/room':
-        this.mode = 'room';
-        break;
-      case '/playlist':
-        this.mode = 'playlist';
-        break;
-    }
     this.obs.on(event.page.changed, (page) => {
-      this.mode = page;
+      //console.log(`list mode: ${this.state.mode}`)
       this.update();
     })
     this.obs.on(event.song.add, (song) => {
@@ -59,7 +51,7 @@ import event from 'event.js';
       if (target != -1) {
         this.songs.splice(target, 1);
       }
-      console.log(`removelist: ${target}`)
+      //console.log(`removelist: ${target}`)
       // this.songs.(song);
       this.update();
     })
@@ -68,8 +60,10 @@ import event from 'event.js';
       this.update();
     })
     this.obs.on(event.index.changed, (index) => {
-      this.songs.forEach((v, k)=>{v.selected = false;})
-      this.songs[index].selected = true;
+      this.songs.forEach((v, k) => {v.selected = false;})
+      if (this.songs[index] != null) {
+        this.songs[index].selected = true;
+      }
       this.update();
       const list = $('app-list');
       const playingSong = $('.list-group-item.active');
@@ -97,10 +91,10 @@ import event from 'event.js';
     <a hre="#" each={ song in songs } class="list-group-item song-list { active: song.selected}" onclick={ songClick }>
       <div style='background-image: url({ song.thumb });' class='song-thumb'/>
       <span class="song-title">{ song.name }</span>
-      <div class="song-action { hidden: this.mode != 'room' }" onclick={ songOpen }>
+      <div class="song-action { hidden: this.state.mode != 'room' }" onclick={ songOpen }>
         <i class="fa fa-external-link"/>
       </div>
-      <div class="song-action { hidden: this.mode != 'playlist' }" onclick={ songRemove }>
+      <div class="song-action { hidden: this.state.mode != 'playlist' }" onclick={ songRemove }>
         <i class="fa fa-remove"/>
       </div>
     </a>

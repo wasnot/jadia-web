@@ -52,19 +52,13 @@ import app_bottom from 'tags/app-bottom.tag';
       'room': '#DD76A3',
       'ai': '#FEEF50',
     }
+    this.mixin('state')
     this.mixin('obs')
     this.obs.on(event.page.changed, (page) => {
       this.refs.modeColor.style.backgroundColor = color[page];
     })
     this.on('mount', () => {
-      switch (location.pathname) {
-        case '/room':
-          this.refs.modeColor.style.backgroundColor = color['room'];
-          break;
-        case '/playlist':
-          this.refs.modeColor.style.backgroundColor = color['playlist'];
-          break;
-      }
+      this.refs.modeColor.style.backgroundColor = color[this.state.mode];
     })
   </script>
 

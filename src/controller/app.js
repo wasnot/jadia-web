@@ -15,27 +15,53 @@ class App {
     this.songsRef = null;
     this.songsListId = null;
 
+    // modeのチェック
+    this.stateProxy = new Proxy({mode: 'room'}, {
+      set(target, prop, value) {
+        // console.log(`set ${prop}: ${value}`);
+        if (prop === 'mode') {
+          switch (value) {
+            case 'room':
+              route('/room')
+              break;
+            case 'playlist':
+              route('/playlist')
+              break;
+          }
+        }
+        target[prop] = value;
+        return value;
+      }
+    });
+    switch (location.pathname) {
+      case '/room':
+        this.stateProxy.mode = 'room';
+        break;
+      case '/playlist':
+        this.stateProxy.mode = 'playlist';
+        break;
+    }
     route('/playlist', () => {
       console.log('playlist');
-      this.obs.trigger(event.page.changed, 'playlist');
+      this.stateProxy.mode = 'playlist';
+      this.obs.trigger(event.page.changed, this.stateProxy.mode);
       this.obs.trigger(event.auth.request);
     });
     route('/room..', () => {
+      this.stateProxy.mode = 'room';
       const q = QueryString.parse();
       const roomId = q.room_id || config.dj_room_id;
       console.log(`room ${roomId}`);
-      this.obs.trigger(event.page.changed, 'room');
+      this.obs.trigger(event.page.changed, this.stateProxy.mode);
       this.updateList();
     });
+    riot.mixin('state', { state: this.stateProxy });
 
     this.obs = riot.observable();
     riot.mixin('obs', { obs: this.obs });
     riot.mount('*');
 
     // observerの登録
-    this.obs.on(event.auth.cancel, (err) => {
-      toastr.error('Login canceled!');
-    });
     this.obs.on(event.auth.checked, (user) => {
       // 初回のauth check
       console.log(`authCheck: ${user}`)
@@ -54,16 +80,6 @@ class App {
         .catch(err => {
           console.log(err);
         });
-    });
-    this.obs.on(event.page.request, (page) => {
-      switch (page) {
-        case 'room':
-          route('/room')
-          break;
-        case 'playlist':
-          route('/playlist')
-          break;
-      }
     });
     this.obs.on(event.songDb.add, (video) => {
       if (video !== null) {

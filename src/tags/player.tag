@@ -25,23 +25,20 @@ import event from 'event.js';
   </style>
 
   <script>
+    this.mixin('state')
     this.mixin('obs')
-    this.mode = 'room'
     this.player = null;
     this.on('mount', () => {
-      switch (location.pathname) {
-        case '/room':
-          this.mode = 'room';
-          break;
-        case '/playlist':
-          this.mode = 'playlist';
-          break;
-      }
       // player initialize
-      this.player = new Player("youtube-player", this.mode);
+      this.player = new Player("youtube-player", this.state.mode);
+      this.player.addListener('changeIndex', (index) => {
+        //console.log(`changeIndex ${index}`);
+        if (this.state.mode === 'playlist') {
+          this.obs.trigger(event.index.changed, index);
+        }
+      });
     })
     this.obs.on(event.page.changed, (page) => {
-      this.mode = page;
       this.player.mode = page;
       //this.updateText();
     })
@@ -59,7 +56,7 @@ import event from 'event.js';
       this.player != null && this.player.selectSong(song);
     });
     this.updateText = () => {
-      if (this.mode === 'room'){
+      if (this.state.mode === 'room'){
         this.refs.overlayText.textContent = 'リストの曲を選ぶと\n視聴できます。'
       } else {
         this.refs.overlayText.textContent = '下のフォームから動画を\n追加してください。'

@@ -1,3 +1,4 @@
+import EventEmmitter from 'events';
 import YouTubePlayer from 'youtube-player';
 
 const PlayerState = {
@@ -9,8 +10,9 @@ const PlayerState = {
   CUED: 5,
 };
 
-export default class Player {
+export default class Player extends EventEmmitter {
   constructor(elementId="youtube-player", mode='room') {
+    super();
     this.playlist = [];
     this.playingIndex = -1;
     this.playing = false;
@@ -20,7 +22,7 @@ export default class Player {
   }
 
   stateChanged(event) {
-    console.log(`stateChanged: ${event.data}`)
+    // console.log(`stateChanged: ${Object.keys(PlayerState).find(k => PlayerState[k] == event.data)}`)
     // Play a next video automatically when the previous video ended.
     if (event.data === PlayerState.ENDED) {
       if (this.mode == 'room') {
@@ -49,6 +51,7 @@ export default class Player {
       this.playingIndex = index;
       this.player.cueVideoById(this.playlist[index].id);
       // this.player.setVolume(this.playlist[index].volume);
+      this.emit('changeIndex', index);
     }
   }
   addSong(song) {
@@ -63,7 +66,7 @@ export default class Player {
     if (target != -1) {
       this.playlist.splice(target, 1);
     }
-    console.log(`removeplay: ${target}`)
+    // console.log(`removeplay: ${target}`)
   }
   resetPlaylist() {
     this.playlist = [];

@@ -4,45 +4,33 @@ import event from 'event.js';
 <mode>
   <script>
     this.mixin('obs');
+    this.mixin('state');
     this.authed = false
-    this.mode = 'room'
-    this.on('mount', () => {
-      switch (location.pathname) {
-        case '/room':
-          this.mode = 'room';
-          break;
-        case '/playlist':
-          this.mode = 'playlist';
-          break;
-      }
-    })
     this.obs.on(event.auth.updated, (authed) => {
       if (authed) {
         this.authed = true;
         if (location.pathname === '/') {
-          this.mode = 'playlist';
+          this.state.mode = 'playlist';
         }
       } else {
         this.authed = false;
-        this.mode = 'room';
+        this.state.mode = 'room';
       }
-      this.obs.trigger(event.page.request, this.mode);
       this.updateModeButton();
     })
     this.changeMode = (e) => {
       e.preventDefault();
-      if (this.mode === 'room') {
-        this.mode = 'playlist';
+      if (this.state.mode === 'room') {
+        this.state.mode = 'playlist';
       } else {
-        this.mode = 'room';
+        this.state.mode = 'room';
       }
-      this.obs.trigger(event.page.request, this.mode);
       this.updateModeButton();
     }
     this.updateModeButton = () => {
       if (this.authed) {
         this.refs.mode.classList.remove('hidden');
-        if (this.mode === 'room'){
+        if (this.state.mode === 'room'){
           this.refs.modeText.textContent = 'PLAYLIST';
         } else {
           this.refs.modeText.textContent = 'PARTY MODE';

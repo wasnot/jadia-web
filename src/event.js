@@ -3,10 +3,8 @@ const event = {
     request: 'auth:request',
     checked: 'auth:checked',
     updated: 'auth:updated',
-    cancel: 'auth:cancel',
   },
   page: {
-    request: 'page:request',
     changed: 'page:changed',
   },
   song: {
