@@ -18,8 +18,8 @@ import app_bottom from 'tags/app-bottom.tag';
     }
     .content-rapper {
       height: 90%;
-      height: -webkit-calc(100% - 50px);
-      height: calc(100% - 50px);
+      height: -webkit-calc(100% - 52px);
+      height: calc(100% - 52px);
       padding-left: 30px;
       padding-right: 30px;
     }

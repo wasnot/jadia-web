@@ -1,6 +1,9 @@
 import firebase from 'firebase/app';
 import toastr from 'toastr';
+import "toastr/build/toastr.css";
 import route from 'riot-route';
+import 'bootstrap/js/dropdown.js';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import QueryString from 'libs/querystring.js';
 import config from 'config.js';
@@ -23,7 +26,7 @@ const app = new App();
 
 import $ from 'jquery';
 window.$ = $;
+window.toastr = toastr; 
 window.route = route;
 window.firebase = firebase;
 window.QueryString = QueryString;
-

@@ -92,10 +92,10 @@ import event from 'event.js';
       <div style='background-image: url({ song.thumb });' class='song-thumb'/>
       <span class="song-title">{ song.name }</span>
       <div class="song-action { hidden: this.state.mode != 'room' }" onclick={ songOpen }>
-        <i class="fa fa-external-link"/>
+        <i class="glyphicon glyphicon-new-window"/>
       </div>
       <div class="song-action { hidden: this.state.mode != 'playlist' }" onclick={ songRemove }>
-        <i class="fa fa-remove"/>
+        <i class="glyphicon glyphicon-remove"/>
       </div>
     </a>
   </ul>
