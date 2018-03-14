@@ -1,0 +1,26 @@
+{
+  "parser": "babel-eslint",
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "globals": {
+    "beforeEach": true,
+    "describe": true,
+    "expect": true,
+    "it": true
+  },
+  "rules": {
+    "arrow-body-style": 0,
+    "comma-dangle": 0,
+    "indent": ["error", 2, {"SwitchCase": 1}],
+    "no-case-declarations": 0,
+    "no-unused-expressions": 0,
+    "import/prefer-default-export": 0
+  }
+}
